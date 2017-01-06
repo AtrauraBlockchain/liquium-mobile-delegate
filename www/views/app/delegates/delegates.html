@@ -1,0 +1,29 @@
+<ion-view class="category-polls-view">
+    <ion-nav-title>
+        <span>Delegation Panel</span>
+    </ion-nav-title>
+    <ion-content>
+        <div class="list delegates-category-row">
+            <form ng-submit="delegateVote()">
+                <div ng-repeat="cat_del in category_delegates" class="item item-icon-right">
+                    <div class="row category-row">
+                        <div class="delegates-category col-md-10">
+                            <span class="title">{{cat_del.name}}</span>
+                        </div>
+                        <select class="col-md-2" ng-model="delegate" ng-change="changeDel(delegate, cat_del)">
+                        <option ng-if="del.idDelegate == cat_del.delegate.idDelegate" ng-repeat="del in all_delegates" ng-value="del.idDelegate" selected>
+                            {{del.name}}
+                        </option>
+                        <option ng-if="del.idDelegate !== cat_del.delegate.idDelegate" ng-repeat="del in all_delegates" ng-value="del.idDelegate">
+                            {{del.name}}
+                        </option>
+                    </select>
+                    </div>
+                </div>
+                <div class="vote col col-center" dynamic-anchor-fix>
+                    <input type="submit" class="button button-positive button-small button-block button-assertive" value="Delegate votes" />
+                </div>
+            </form>
+        </div>
+    </ion-content>
+</ion-view>
