@@ -158,8 +158,15 @@ angular.module('liquium.controllers', ['ApiURL', 'ContractAddress'])
 				"owner": "0",
 				"deleted": false
 			});
-		for (var delegate in response.data.delegates) {
-			$scope.all_delegates.push(response.data.delegates[delegate]);
+		for (var del in response.data.delegates) {
+			var delegate = response.data.delegates[del];
+			if (delegate.owner == liquiumMobileLib.account.toLowerCase()) {
+				$scope.idDelegate = delegate.idDelegate;
+				$scope.delegateName = delegate.name;
+				$scope.isDelegate = true;
+			} else {
+				$scope.all_delegates.push(response.data.delegates[del]);
+			}
 		}
 		for (var category in response.data.categories) {
 			var deleg;
@@ -197,7 +204,7 @@ angular.module('liquium.controllers', ['ApiURL', 'ContractAddress'])
 		$ionicLoading.show({
 			template: 'Sending transaction...'
 		});
-		liquiumMobileLib.setDelegates(ContractAddress.address, categoryIds, delegates, function (err, txHash){
+		liquiumMobileLib.dSetDelegates(ContractAddress.address, $scope.idDelegate, categoryIds, delegates, function (err, txHash){
 			if(err){
 				$ionicLoading.hide();
  				// An alert dialog
@@ -244,24 +251,65 @@ angular.module('liquium.controllers', ['ApiURL', 'ContractAddress'])
 
 })
 
-.controller('DelegatePanelCtrl', function($scope, $http, $stateParams, ApiURL, ContractAddress) {
-	$scope.isDelegate = false;
+.controller('DelegatePanelCtrl', function($scope, $http, $stateParams, ApiURL, ContractAddress, $ionicPopup, $ionicLoading, $cordovaClipboard, $cordovaToast) {
 
 	$http.get(ApiURL.url + '/api/organization/' + ContractAddress.address).then(function(response) {
-		for (var i = 0; i < response.data.delegates.length; ++i) {
-			var delegate = response.data.delegates[i];
-			if (delegate.owner == liquiumMobileLib.account)
+		for (var del in response.data.delegates) {
+			var delegate = response.data.delegates[del];
+			if (delegate.owner == liquiumMobileLib.account.toLowerCase()) {
 				$scope.idDelegate = delegate.idDelegate;
 				$scope.delegateName = delegate.name;
 				$scope.isDelegate = true;
 				break;
+			}
 		}
 	});
 
 	$scope.registerAsDelegate = function(delegateName) {
-		console.log(delegateName);
 		if (delegateName) {
-			console.log(delegateName);
+			liquiumMobileLib.addDelegate(ContractAddress.address, delegateName, function(err, txHash) {
+				if(err){
+					$ionicLoading.hide();
+	 				// An alert dialog
+	 				$ionicPopup.alert({
+	     					title: 'Error',
+	     					template: 'There was an error processing the transaction'
+	   			});
+					//error handling
+				} else {
+					$ionicLoading.hide();
+					$ionicPopup.show({
+	   					title: "You're now a delegate",
+	   					template: 'Transaction Hash: ' + txHash,
+							buttons: [
+				      { text: 'Ok',
+								type: 'button-positive',
+								onTap: function(e) {
+								}
+							},
+				      {
+				        text: 'Copy txHash',
+								type: 'button-positive',
+								onTap: function(e) {
+									$cordovaClipboard
+							    .copy(txHash)
+							    .then(function () {
+							      // success
+										$cordovaToast
+								    .show('Transaction Hash copied to clipboard', 'long', 'center')
+								    .then(function(success) {
+								      // success
+								    }, function (error) {
+								      // error
+								    });
+							    }, function () {
+							      // error
+							    });
+								}
+				      }]
+						});
+				}
+			})
 		}
   };
 })
