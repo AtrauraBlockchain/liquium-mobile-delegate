@@ -22,6 +22,11 @@
                 <ion-radio ng-model="$parent.choice" ng-value="option.ballot" required>{{ option.answer }} ({{option.result}})</ion-radio>
               </div>
               <div ng-if="!hasVoted">
+                <div class = "motivation col col-center">
+                  <label>Motivation:
+                    <input type="text" ng-model="$parent.motivation" required ng-minlength=10 ng-maxlength=1000>
+                  </label>
+                </div>
                 <div class="vote col col-center" dynamic-anchor-fix>
                   <input type="submit" class="button button-positive button-small button-block button-assertive" value="Vote"/>
                 </div>
