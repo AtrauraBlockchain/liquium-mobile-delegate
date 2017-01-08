@@ -200,7 +200,7 @@ angular.module('liquium.controllers', ['ApiURL', 'ContractAddress'])
             }
         }
         $ionicLoading.show({template: 'Sending transaction...'});
-        liquiumMobileLib.dSetDelegates(ContractAddress.address, $scope.idDelegate, categoryIds, delegates, function(err, txHash) {
+        liquiumMobileLib.setDelegates(ContractAddress.address, categoryIds, delegates, function(err, txHash) {
             if (err) {
                 $ionicLoading.hide();
                 // An alert dialog
