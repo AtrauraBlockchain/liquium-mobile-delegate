@@ -95,13 +95,15 @@ angular.module('liquium.controllers', ['ApiURL', 'ContractAddress'])
 
         $scope.hasVoted = false;
         totalVoted = 0;
-        for (var ballotId in respJson.polls[pollId].vote.ballots) {
-            totalVoted += respJson.polls[pollId].vote.ballots[ballotId].amount;
-            if (respJson.polls[pollId].vote.ballots[ballotId].amount == 100)
-                $scope.votedOption = respJson.polls[pollId].options[ballotId].answer;
-            }
-        if (totalVoted == 100)
-            $scope.hasVoted = true;
+        if (typeof respJson.polls[pollId].vote !== 'undefined') {
+			for (var ballotId in respJson.polls[pollId].vote.ballots) {
+				totalVoted += respJson.polls[pollId].vote.ballots[ballotId].amount;
+				if (respJson.polls[pollId].vote.ballots[ballotId].amount == 100)
+					$scope.votedOption = respJson.polls[pollId].options[ballotId].answer;
+			}
+			if (totalVoted == 100)
+				$scope.hasVoted = true;
+		}
 
         $ionicLoading.hide();
     });
@@ -113,7 +115,7 @@ angular.module('liquium.controllers', ['ApiURL', 'ContractAddress'])
                 console.log(err);
                 $ionicLoading.hide();
                 // An alert dialog
-                $ionicPopup.alert({title: 'Error', template: err});
+                $ionicPopup.alert({title: 'Error', template: 'You are not a registered delegate'});
             } else {
 				console.log(txHash);
                 $ionicLoading.hide();
