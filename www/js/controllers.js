@@ -78,7 +78,7 @@ angular.module('liquium.controllers', ['ApiURL', 'ContractAddress'])
 })
 
 //this method brings posts for a source provider
-    .controller('PollCtrl', function($scope, $stateParams, $http, $q, $ionicLoading, $state, $ionicPopup, ApiURL, ContractAddress) {
+    .controller('PollCtrl', function($scope, $stateParams, $http, $q, $ionicLoading, $state, $cordovaClipboard, $ionicPopup, ApiURL, ContractAddress) {
 
     var pollId = $stateParams.pollId;
     var respJson;
