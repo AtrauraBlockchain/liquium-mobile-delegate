@@ -13,7 +13,7 @@
     "ngCordova": "^0.1.27-alpha",
     "angular-slugify": "williamboman/angular-slugify",
     "bourbon": "~4.2.3",
-    "liquium-mobilelib": "^0.0.2"
+    "liquium-mobilelib": "^0.0.5"
   },
   "resolutions": {
     "angular": "~1.6.1"

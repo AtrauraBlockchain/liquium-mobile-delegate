@@ -17,7 +17,7 @@
         </div>
         <div class="poll-content item item-text-wrap">
           <p class="poll-excerpt">{{ poll.question }}</p>
-            <form class="poll-actions" name="form" ng-submit="vote(choice)" novalidate="">
+            <form class="poll-actions" name="form" ng-submit="vote(choice, motivation)" novalidate="">
               <div ng-repeat="option in poll.options" class="item item-icon-right">
                 <ion-radio ng-model="$parent.choice" ng-value="option.ballot" required>{{ option.answer }} ({{option.result}})</ion-radio>
               </div>
