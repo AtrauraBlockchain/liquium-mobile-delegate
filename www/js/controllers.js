@@ -154,7 +154,7 @@ angular.module('liquium.controllers', ['ApiURL', 'ContractAddress'])
     $scope.new_delegates = [];
 
     $http.get(ApiURL.url + '/api/organization/' + ContractAddress.address + "?voter=" + liquiumMobileLib.account).then(function(response) {
-        $scope.all_delegates.push(delegate = {
+        $scope.all_delegates.push({
             "idDelegate": 0,
             "name": "Nobody",
             "owner": "0",
@@ -289,7 +289,7 @@ angular.module('liquium.controllers', ['ApiURL', 'ContractAddress'])
                         ]
                     });
                 }
-            })
+            });
         }
     };
 });
